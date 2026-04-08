@@ -1,3 +1,4 @@
+
 #include "NRVM_class.cu" 
 #include <fstream>
 
@@ -58,7 +59,7 @@ int main(int argc, char *argv[])
 
     writeFile << 0 <<" " <<OP1.x<<" " <<OP1.y<<" " <<OP2.x<<" " <<OP2.y<<" "<< Chi1<<" "<< Chi2 <<" \n";
 
-    NRVM.GetBoxConf_chi(NinBox,VinBox,CinBox,config_box);
+    NRVM.GetBoxConf(NinBox,VinBox,CinBox);
 
     for (int i=0;i<2*xsize*ysize/config_box/config_box;i++){
         writeFile2.write(reinterpret_cast<const char*>(&NinBox[i]), sizeof(int));
@@ -76,7 +77,7 @@ int main(int argc, char *argv[])
 
         if (config_box!=0 && (int)(t/Delta_t_meas+0.01)%1==0)
         {    
-            NRVM.GetBoxConf_chi(NinBox,VinBox,CinBox,config_box);
+            NRVM.GetBoxConf(NinBox,VinBox,CinBox);
 
             for (int i=0;i<2*xsize*ysize/config_box/config_box;i++){
                 writeFile2.write(reinterpret_cast<const char*>(&NinBox[i]), sizeof(int));
