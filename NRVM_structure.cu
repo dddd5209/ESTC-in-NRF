@@ -1,5 +1,3 @@
-// version 1 (2024.12.02)
-
 #define radius2 (1.0)   // (interaction range)^2
 #define my_min(A, B) ((A)>(B) ? (B):(A))
 #define nThreadMax 128
