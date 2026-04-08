@@ -1,3 +1,4 @@
+// version 1 (2024.12.02)
 #include "NRVM_device.cu" 
 
 class NRCTVM{
@@ -79,9 +80,9 @@ void NRCTVM::AllocateMemory() {
     cudaMalloc(&Head,     sizeof(int)*NofGrid) ;
     cudaMalloc(&Tail,     sizeof(int)*NofGrid) ;
 
-    cudaMalloc(&NinBox,     sizeof(int)*NofGrid*2/Config_Box/SizeofBox) ;
-    cudaMalloc(&VinBox,     sizeof(Vec2)*NofGrid*2/Config_Box/SizeofBox) ;
-    cudaMalloc(&CinBox,     sizeof(double)*NofGrid*2/Config_Box/SizeofBox) ;
+    cudaMalloc(&NinBox,     sizeof(int)*NofGrid*2/Config_Box/Config_Box) ;
+    cudaMalloc(&VinBox,     sizeof(Vec2)*NofGrid*2/Config_Box/Config_Box) ;
+    cudaMalloc(&CinBox,     sizeof(double)*NofGrid*2/Config_Box/Config_Box) ;
 
     cudaMalloc(&Positions,  sizeof(Vec2)*NofParticles) ;
     cudaMalloc(&Angles,      sizeof(double)*NofParticles) ;
