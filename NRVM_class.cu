@@ -1,3 +1,4 @@
+// version 1 (2024.12.02)
 #include "NRVM_device.cu" 
 
 class NRCTVM{
@@ -10,8 +11,7 @@ public:
     void TimeEvolution(double t);
     void GetConf(Vec2* host_r, Vec2* host_v, char* host_species);
     Vec2 GetOP();
-    void GetBoxConf(int* ninbox,Vec2* vinbox, int box_len);
-    void GetBoxConf_chi(int* ninbox, Vec2* vinbox, double* cinbox, int box_len);
+    void GetBoxConf(int* ninbox, Vec2* vinbox, double* cinbox);
     void GetOPS(Vec2& OP1, Vec2& OP2, double& Chi1, double& Chi2);
 
 protected:
@@ -80,9 +80,9 @@ void NRCTVM::AllocateMemory() {
     cudaMalloc(&Head,     sizeof(int)*NofGrid) ;
     cudaMalloc(&Tail,     sizeof(int)*NofGrid) ;
 
-    cudaMalloc(&NinBox,     sizeof(int)*NofGrid*2/SizeofBox/SizeofBox) ;
-    cudaMalloc(&VinBox,     sizeof(Vec2)*NofGrid*2/SizeofBox/SizeofBox) ;
-    cudaMalloc(&CinBox,     sizeof(double)*NofGrid*2/SizeofBox/SizeofBox) ;
+    cudaMalloc(&NinBox,     sizeof(int)*NofGrid*2/Config_Box/SizeofBox) ;
+    cudaMalloc(&VinBox,     sizeof(Vec2)*NofGrid*2/Config_Box/SizeofBox) ;
+    cudaMalloc(&CinBox,     sizeof(double)*NofGrid*2/Config_Box/SizeofBox) ;
 
     cudaMalloc(&Positions,  sizeof(Vec2)*NofParticles) ;
     cudaMalloc(&Angles,      sizeof(double)*NofParticles) ;
@@ -242,13 +242,13 @@ void NRCTVM::GetOPS(Vec2& OP1, Vec2& OP2, double& Chi1, double& Chi2) {
 
 }
 
-void NRCTVM::GetBoxConf_chi(int* ninbox, Vec2* vinbox, double* cinbox, int SizeofBox)
+void NRCTVM::GetBoxConf(int* ninbox, Vec2* vinbox, double* cinbox)
 {
     Fill_Cell();
-    cell_m_chi<<<NofBlocks_c, NofThreads>>>(XSize, YSize, 2, Positions, Angles, Torque, Species, Head, Tail, SizeofBox, NinBox, VinBox, CinBox, Dt);
+    cell_m_chi<<<NofBlocks_c, NofThreads>>>(XSize, YSize, 2, Positions, Angles, Torque, Species, Head, Tail, Config_Box, NinBox, VinBox, CinBox, Dt);
 
-    cudaMemcpy(ninbox, NinBox, sizeof(int)*(2*NofGrid/SizeofBox/SizeofBox), cudaMemcpyDeviceToHost);
-    cudaMemcpy(vinbox, VinBox, sizeof(Vec2)*(2*NofGrid/SizeofBox/SizeofBox), cudaMemcpyDeviceToHost);
-    cudaMemcpy(cinbox, CinBox, sizeof(double)*(2*NofGrid/SizeofBox/SizeofBox), cudaMemcpyDeviceToHost);
+    cudaMemcpy(ninbox, NinBox, sizeof(int)*(2*NofGrid/Config_Box/Config_Box), cudaMemcpyDeviceToHost);
+    cudaMemcpy(vinbox, VinBox, sizeof(Vec2)*(2*NofGrid/Config_Box/Config_Box), cudaMemcpyDeviceToHost);
+    cudaMemcpy(cinbox, CinBox, sizeof(double)*(2*NofGrid/Config_Box/Config_Box), cudaMemcpyDeviceToHost);
 
 }
