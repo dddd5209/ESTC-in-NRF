@@ -1,4 +1,3 @@
-// version 1 (2024.12.02)
 #include "NRVM_device.cu" 
 
 class NRCTVM{
