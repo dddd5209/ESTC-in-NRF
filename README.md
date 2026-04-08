@@ -132,7 +132,7 @@ double Vy_sum
 double Chi_sum
 ```
 
-The box index runs with `x` varying fastest, and within each box the data are stored in the order species A followed by species B. The total number of box-species slots per measurement is therefore
+Within each box the data are stored in the order species A followed by species B. The total number of box-species slots per measurement is therefore
 
 ```text
 2 * (xsize / boxsize) * (ysize / boxsize)
